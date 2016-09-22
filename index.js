@@ -54,7 +54,7 @@ export function makeResponsive (WrappedComponent) {
 }
 
 export function getDimensions (Component) {
-  var ori = (Component.orientation || orientation).toLowerCase()
+  var ori = getOrientation(Component).toLowerCase()
   var { width, height } = Dimensions.get('window')
   // orientation locks may cause orientation and width/height
   // to mismatch
@@ -71,4 +71,8 @@ export function getDimensions (Component) {
   }
 
   return { width, height }
+}
+
+export function getOrientation (Component) {
+  return (Component && Component.orientation) || orientation
 }
