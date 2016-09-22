@@ -1,4 +1,10 @@
 
+# Install
+
+```sh
+npm install --save react-native-orient
+```
+
 # Usage
 
 ```js
