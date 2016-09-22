@@ -11,7 +11,7 @@ npm install --save react-native-orient
 import { makeResponsive, getDimensions } from 'react-native-orient'
 
 export class PortraitLockedComponent extends React.Component {
-  static orientation = 'portrait'
+  static orientation = 'portrait';
   render() {
     const dim = getDimensions(PortraitLockedComponent)
     return (
