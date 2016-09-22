@@ -1,0 +1,15 @@
+{
+  "name": "react-native-orient",
+  "version": "1.0.0",
+  "description": "higher order component that responds to orientation changes and passes down new props",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Mark Vayngrib <mark@tradle.io> (http://github.com/mvayngrib)",
+  "license": "MIT",
+  "peerDependencies": {
+    "react-native-orientation": ">=1.1.17"
+  }
+}
