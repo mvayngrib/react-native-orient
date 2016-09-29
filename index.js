@@ -1,7 +1,8 @@
 
 import React, { Component } from 'react'
 import {
-  Dimensions
+  Dimensions,
+  Platform
 } from 'react-native'
 
 import Orientation from 'react-native-orientation'
@@ -23,13 +24,26 @@ export function makeResponsive (WrappedComponent) {
     constructor(props) {
       super(props)
       this._updateOrientation = this._updateOrientation.bind(this)
+      this._handleResize = this._handleResize.bind(this)
       this.state = { orientation, ...getDimensions(WrappedComponent) }
     }
     componentWillMount() {
       Orientation.addOrientationListener(this._updateOrientation)
+      if (Platform.OS === 'web') {
+        window.addEventListener('resize', this._handleResize)
+      }
     }
     componentWillUnmount() {
       Orientation.removeOrientationListener(this._updateOrientation)
+      if (Platform.OS === 'web') {
+        window.removeEventListener('resize', this._handleResize)
+        clearTimeout(this._resizeTimeout)
+      }
+    }
+    _handleResize() {
+      orientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait'
+      clearTimeout(this._resizeTimeout)
+      this._resizeTimeout = setTimeout(this._updateOrientation.bind(this, orientation), 100)
     }
     _updateOrientation(orientation) {
       this.setState({ orientation, ...getDimensions(WrappedComponent) })
@@ -61,7 +75,7 @@ export function getDimensions (Component) {
   //
   // if orientation is locked to PORTRAIT/LANDSCAPE (via `static orientation = 'PORTRAIT'`)
   // width vs height should reflect that
-  var switchWidthHeight = (
+  var switchWidthHeight = Platform.OS !== 'web' && (
     (ori === 'portrait' && width > height) ||
     (ori === 'landscape' && width < height)
   )
