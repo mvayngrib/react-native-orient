@@ -9,13 +9,7 @@ import Orientation from 'react-native-orientation'
 
 var orientation = Orientation.getInitialOrientation()
 Orientation.addOrientationListener(o => {
-  o = o.toLowerCase()
-  // disallow portraitupsidedown
-  if (o === 'portraitupsidedown' || o.indexOf('landscape') !== -1) {
-    orientation = 'landscape'
-  } else {
-    orientation = 'portrait'
-  }
+  orientation = normalize(o)
 })
 
 export function makeResponsive (WrappedComponent) {
@@ -41,12 +35,17 @@ export function makeResponsive (WrappedComponent) {
       }
     }
     _handleResize() {
-      orientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait'
+      orientation = window.innerWidth > window.innerHeight ? 'LANDSCAPE' : 'PORTRAIT'
       clearTimeout(this._resizeTimeout)
       this._resizeTimeout = setTimeout(this._updateOrientation.bind(this, orientation), 100)
     }
     _updateOrientation(orientation) {
-      this.setState({ orientation, ...getDimensions(WrappedComponent) })
+      if (orientation.toUpperCase() !== 'UNKNOWN') {
+        orientation = normalize(orientation)
+        if (orientation !== this.state.orientation) {
+          this.setState({ orientation, ...getDimensions(WrappedComponent) })
+        }
+      }
     }
     shouldComponentUpdate(newProps, newState) {
       for (var p in newProps) {
@@ -76,8 +75,8 @@ export function getDimensions (Component) {
   // if orientation is locked to PORTRAIT/LANDSCAPE (via `static orientation = 'PORTRAIT'`)
   // width vs height should reflect that
   var switchWidthHeight = Platform.OS !== 'web' && (
-    (ori === 'portrait' && width > height) ||
-    (ori === 'landscape' && width < height)
+    (ori === 'PORTRAIT' && width > height) ||
+    (ori === 'LANDSCAPE' && width < height)
   )
 
   if (switchWidthHeight) {
@@ -89,4 +88,14 @@ export function getDimensions (Component) {
 
 export function getOrientation (Component) {
   return (Component && Component.orientation) || orientation
+}
+
+function normalize (o) {
+  o = o.toUpperCase()
+  // disallow portraitupsidedown
+  if (o === 'PORTRAITUPSIDEDOWN' || o.indexOf('LANDSCAPE') !== -1) {
+    return 'LANDSCAPE'
+  } else {
+    return 'PORTRAIT'
+  }
 }
