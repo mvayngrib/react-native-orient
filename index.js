@@ -12,7 +12,11 @@ Orientation.addOrientationListener(o => {
   orientation = normalize(o)
 })
 
-export function makeResponsive (WrappedComponent) {
+exports.makeResponsive = makeResponsive
+exports.getOrientation = getOrientation
+exports.getDimensions = getDimensions
+
+function makeResponsive (WrappedComponent) {
   return class Responsive extends Component {
     static displayName = WrappedComponent.displayName;
     constructor(props) {
@@ -66,8 +70,8 @@ export function makeResponsive (WrappedComponent) {
   }
 }
 
-export function getDimensions (Component) {
-  var ori = getOrientation(Component).toLowerCase()
+function getDimensions (Component) {
+  var ori = normalize(getOrientation(Component))
   var { width, height } = Dimensions.get('window')
   // orientation locks may cause orientation and width/height
   // to mismatch
@@ -86,7 +90,7 @@ export function getDimensions (Component) {
   return { width, height }
 }
 
-export function getOrientation (Component) {
+function getOrientation (Component) {
   return (Component && Component.orientation) || orientation
 }
 
