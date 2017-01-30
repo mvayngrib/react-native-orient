@@ -11,5 +11,9 @@
   "license": "MIT",
   "peerDependencies": {
     "react-native-orientation": ">=1.1.17"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mvayngrib/react-native-orient"
   }
 }
