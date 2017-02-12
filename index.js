@@ -46,9 +46,7 @@ function makeResponsive (WrappedComponent) {
     _updateOrientation(orientation) {
       if (orientation.toUpperCase() !== 'UNKNOWN') {
         orientation = normalize(orientation)
-        if (orientation !== this.state.orientation) {
-          this.setState({ orientation, ...getDimensions(WrappedComponent) })
-        }
+        this.setState({ orientation, ...getDimensions(WrappedComponent) })
       }
     }
     shouldComponentUpdate(newProps, newState) {
