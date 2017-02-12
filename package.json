@@ -1,6 +1,6 @@
 {
   "name": "react-native-orient",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "higher order component that responds to orientation changes and passes down new props",
   "main": "index.js",
   "scripts": {
